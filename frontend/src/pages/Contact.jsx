@@ -1,7 +1,7 @@
 import { Navbar } from "../components/Navbar"
 import { Footer } from "../components/Footer"
 import { ContactForm } from "../components/ContactForm"
-import { MapPin, Phone, Clock } from "lucide-react"
+import { Mail, Clock } from "lucide-react"
 import { PageTransition } from "../components/PageTransition"
 
 export function Contact() {
@@ -24,23 +24,15 @@ export function Contact() {
                 {/* Info */}
                 <div className="flex flex-col gap-6">
                     <div className="bg-cream rounded-2xl border border-peach p-6 shadow-sm">
-                        <h2 className="text-lg font-semibold text-cocoa mb-4">Visit Us</h2>
+                        <h2 className="text-lg font-semibold text-cocoa mb-4">Contact Info</h2>
                         <ul className="flex flex-col gap-4 text-sm text-cocoa/70">
-                            <li className="flex items-start gap-3">
-                                <MapPin size={18} className="text-dusty mt-0.5 shrink-0" />
-                                <span>123 Beauty Lane, Suite 4<br />New York, NY 10001</span>
+                            <li className="flex items-center gap-3">
+                                <Mail size={18} className="text-dusty shrink-0" />
+                                <a href="mailto:rovinsanque3@gmail.com" className="hover:text-dusty transition">rovinsanque3@gmail.com</a>
                             </li>
                             <li className="flex items-center gap-3">
-                                <Phone size={18} className="text-dusty shrink-0" />
-                                <span>(555) 123-4567</span>
-                            </li>
-                            <li className="flex items-start gap-3">
-                                <Clock size={18} className="text-dusty mt-0.5 shrink-0" />
-                                <div>
-                                    <p>Mon – Fri: 9am – 7pm</p>
-                                    <p>Sat: 9am – 6pm</p>
-                                    <p>Sun: 10am – 5pm</p>
-                                </div>
+                                <Clock size={18} className="text-dusty shrink-0" />
+                                <span>By schedule</span>
                             </li>
                         </ul>
                     </div>

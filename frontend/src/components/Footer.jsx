@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { Instagram, Phone, MapPin } from "lucide-react"
+import { Instagram, Mail } from "lucide-react"
 
 export function Footer() {
     return (
@@ -22,16 +22,15 @@ export function Footer() {
                     </ul>
                 </div>
                 <div>
-                    <h4 className="text-cream text-sm font-semibold mb-3 uppercase tracking-wider">Find Us</h4>
+                    <h4 className="text-cream text-sm font-semibold mb-3 uppercase tracking-wider">Contact</h4>
                     <ul className="space-y-2 text-sm">
-                        <li className="flex items-center gap-2"><MapPin size={14} /> 123 Beauty Lane, Suite 4</li>
-                        <li className="flex items-center gap-2"><Phone size={14} /> (555) 123-4567</li>
-                        <li className="flex items-center gap-2"><Instagram size={14} /> @luxenails</li>
+                        <li className="flex items-center gap-2"><Mail size={14} /> rovinsanque3@gmail.com</li>
+                        <li className="flex items-center gap-2"><Instagram size={14} /> @nailsbyregina</li>
                     </ul>
                 </div>
             </div>
             <div className="border-t border-cream/10 text-center text-xs text-cream/30 py-4">
-                © {new Date().getFullYear()} Luxe Nails. All rights reserved.
+                © {new Date().getFullYear()} Nails by Regina. All rights reserved.
             </div>
         </footer>
     )
