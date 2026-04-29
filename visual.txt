@@ -1,0 +1,23 @@
+config.py — reads your .env file and makes the settings available as Python variables. Nothing else uses it directly except the next layer.                      
+                                                                                                                                                                   
+  database.py — imports settings from config to get the database URL, then uses it to create the engine (the actual connection to Postgres) and SessionLocal (the  
+  factory for database sessions).                                                                                                                                  
+                                                                                                                                                                   
+  base.py — completely separate from the connection. It just defines the Base class that all your models inherit from. SQLAlchemy uses Base to know which classes  
+  are tables.
+                                                                                                                                                                   
+  main.py — the entry point. It imports both engine (from database.py) and Base (from base.py) and calls Base.metadata.create_all(bind=engine). This is the moment 
+  everything comes together — SQLAlchemy looks at every class that inherited from Base, and uses the engine to create those tables in Postgres.
+                                                                                                                                                                   
+  So visually:                                                                                                                                                   
+
+  config.py
+      ↓ (database_url)
+  database.py  →  engine + SessionLocal                                                                                                                            
+                      ↓
+  base.py  →  Base (knows all models)                                                                                                                              
+                      ↓                                                                                                                                          
+  main.py  →  Base.metadata.create_all(bind=engine)                                                                                                                
+              → tables created in Postgres                                                                                                                         
+   
+  config feeds database, database and base both feed main, and main is what actually fires the shot.    
