@@ -24,7 +24,7 @@ export function Navbar() {
         <nav className="bg-cream border-b border-peach sticky top-0 z-50 shadow-sm">
             <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
                 <Link to="/" className="text-xl font-bold text-cocoa tracking-wide">
-                    Nails by Regina
+                    DBClaws
                 </Link>
 
                 {/* Desktop nav */}

@@ -23,7 +23,7 @@ export function Gallery() {
 
             <section className="bg-peach py-12 px-4 text-center">
                 <h1 className="text-3xl font-bold text-cocoa mb-2">Our Gallery</h1>
-                <p className="text-sage max-w-md mx-auto">A glimpse of our work — every nail tells a story.</p>
+                <p className="text-sage max-w-md mx-auto">A glimpse of our work. Every nail tells a story.</p>
             </section>
 
             <section className="flex-1 max-w-6xl mx-auto w-full px-4 py-12">

@@ -6,7 +6,7 @@ export default {
   ],
   theme: {
     extend: {
-      colors: {
+colors: {
         cocoa:  "#664E44",
         dusty:  "#B08B7F",
         cream:  "#FAF4E5",

@@ -6,7 +6,7 @@ export function Footer() {
         <footer className="bg-cocoa text-cream/70 mt-auto">
             <div className="max-w-6xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div>
-                    <h3 className="text-cream text-lg font-bold mb-2">Nails by Regina</h3>
+                    <h3 className="text-cream text-lg font-bold mb-2">DBClaws</h3>
                     <p className="text-sm text-cream/50">Premium nail care & beauty services. Book your appointment today.</p>
                 </div>
                 <div>
@@ -30,7 +30,7 @@ export function Footer() {
                 </div>
             </div>
             <div className="border-t border-cream/10 text-center text-xs text-cream/30 py-4">
-                © {new Date().getFullYear()} Nails by Regina. All rights reserved.
+                © {new Date().getFullYear()} DBClaws. All rights reserved.
             </div>
         </footer>
     )

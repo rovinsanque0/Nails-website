@@ -25,7 +25,7 @@ export function Home() {
             <section className="bg-peach py-20 px-4 text-center">
                 <p className="text-dusty text-sm font-medium uppercase tracking-widest mb-3">Premium Nail Studio</p>
                 <h1 className="text-4xl md:text-5xl font-bold text-cocoa mb-4 leading-tight">
-                    Nails by Regina
+                    DBClaws
                 </h1>
                 <p className="text-sage text-lg max-w-md mx-auto mb-8">
                     Treat yourself to a luxurious nail experience. Gel, acrylics, nail art, and more.
