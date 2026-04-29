@@ -24,7 +24,7 @@ export function AdminDashboard() {
         <div className="min-h-screen flex">
             {/* Sidebar */}
             <aside className="w-56 bg-cocoa text-cream/70 flex flex-col py-6 px-4 shrink-0">
-                <Link to="/" className="text-cream font-bold text-lg mb-8 block">Luxe Nails</Link>
+                <Link to="/" className="text-cream font-bold text-lg mb-8 block">DBClaws</Link>
                 <p className="text-xs uppercase tracking-widest text-cream/30 mb-3">Admin Panel</p>
                 <nav className="flex flex-col gap-1 flex-1">
                     {navItems.map(item => (
