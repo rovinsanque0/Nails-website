@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from app.database.database import get_db
 from app.schemas.contact import ContactCreate, ContactResponse
 from app.crud.contact import get_contact as crud_get_contact, get_contacts as crud_get_contacts, mark_read as crud_mark_read, create_contact as crud_create_contact
-from app.core.dependencies import get_current_admin
+from app.core.dependencies import get_current_admin, get_current_user
 from app.core.email import send_contact_email
 
 router = APIRouter()
@@ -17,7 +17,7 @@ def get_contact(contact_id: int, db: Session = Depends(get_db), current_user=Dep
     return crud_get_contact(db, contact_id)
 
 @router.post("/contact", response_model=ContactResponse)
-async def create_contact(contact: ContactCreate, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
+async def create_contact(contact: ContactCreate, background_tasks: BackgroundTasks, db: Session = Depends(get_db), current_user=Depends(get_current_user)):
     db_contact = crud_create_contact(db, contact)
     background_tasks.add_task(send_contact_email, contact.name, contact.email, contact.message)
     return db_contact

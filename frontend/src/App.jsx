@@ -21,10 +21,10 @@ function AppRoutes() {
                 <Route path="/" element={<Home />} />
                 <Route path="/services" element={<Service />} />
                 <Route path="/gallery" element={<Gallery />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/booking" element={<Booking />} />
+                <Route path="/contact" element={<ProtectedRoute><Contact /></ProtectedRoute>} />
+                <Route path="/booking" element={<ProtectedRoute><Booking /></ProtectedRoute>} />
                 <Route path="/login" element={<Login />} />
-                <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>}>
+                <Route path="/admin" element={<ProtectedRoute adminOnly><AdminDashboard /></ProtectedRoute>}>
                     <Route path="appointments" element={<ManageAppointments />} />
                     <Route path="gallery" element={<ManageGallery />} />
                     <Route path="services" element={<ManageServices />} />
