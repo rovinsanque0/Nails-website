@@ -8,7 +8,7 @@ class Service(Base):
     name = Column(String, nullable= False)
     description = Column(String)
     price = Column(Float, nullable= False)
-    duration = Column(Integer, nullable=False)
+    duration = Column(String, nullable=False)
     is_active = Column(Boolean, default= True)
 
     

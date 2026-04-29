@@ -23,7 +23,7 @@ export function ManageServices() {
                 name: data.name,
                 description: data.description,
                 price: parseFloat(data.price),
-                duration: parseInt(data.duration),
+                duration: data.duration,
             })
             setServices(prev => [...prev, newService])
             toast.success("Service added.")
@@ -79,12 +79,11 @@ export function ManageServices() {
                         {errors.price && <p className="text-dusty text-xs mt-1">{errors.price.message}</p>}
                     </div>
                     <div className="col-span-2 md:col-span-1">
-                        <label className="block text-sm font-medium text-cocoa mb-1">Duration (min)</label>
+                        <label className="block text-sm font-medium text-cocoa mb-1">Duration</label>
                         <input
-                            type="number"
-                            {...register("duration", { required: "Required", min: { value: 1, message: "Must be positive" } })}
+                            {...register("duration", { required: "Required" })}
                             className="w-full border border-peach rounded-lg px-3 py-2 text-sm bg-cream focus:outline-none focus:ring-2 focus:ring-dusty/30"
-                            placeholder="60"
+                            placeholder="60-90 min"
                         />
                         {errors.duration && <p className="text-dusty text-xs mt-1">{errors.duration.message}</p>}
                     </div>

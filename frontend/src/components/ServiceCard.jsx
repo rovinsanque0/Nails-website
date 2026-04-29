@@ -15,7 +15,7 @@ export function ServiceCard({ service }) {
             )}
             <div className="flex items-center justify-between mt-auto">
                 <span className="flex items-center gap-1 text-sage text-xs">
-                    <Clock size={13} /> {service.duration} min
+                    <Clock size={13} /> {service.duration}
                 </span>
                 <Link
                     to={`/booking?service=${service.id}`}

@@ -6,13 +6,13 @@ class ServiceCreate(BaseModel):
     name: str
     description: Optional[str] = None
     price: float
-    duration: int
-    is_active: bool
+    duration: str
+    is_active: bool = True
 
 class ServiceResponse(BaseModel):
     id: int
     name: str
     description: Optional[str] = None
     price: float
-    duration: int
+    duration: str
     is_active: bool
