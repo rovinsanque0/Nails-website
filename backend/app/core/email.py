@@ -1,15 +1,7 @@
-from fastapi_mail import FastMail, MessageSchema, ConnectionConfig, MessageType
+import resend
 from app.core.config import settings
 
-conf = ConnectionConfig(
-    MAIL_USERNAME=settings.mail_username,
-    MAIL_PASSWORD=settings.mail_password,
-    MAIL_FROM=settings.mail_from,
-    MAIL_PORT=465,
-    MAIL_SERVER="smtp.gmail.com",
-    MAIL_STARTTLS=False,
-    MAIL_SSL_TLS=True,
-)
+resend.api_key = settings.resend_api_key
 
 async def send_contact_email(name: str, email: str, message: str):
     body = f"""
@@ -20,12 +12,9 @@ async def send_contact_email(name: str, email: str, message: str):
     <p>{message}</p>
     """
 
-    msg = MessageSchema(
-        subject=f"New message from {name}",
-        recipients=[settings.mail_to],
-        body=body,
-        subtype=MessageType.html,
-    )
-
-    fm = FastMail(conf)
-    await fm.send_message(msg)
+    resend.Emails.send({
+        "from": "Nails by Regina <noreply@nails.rovin.cloud>",
+        "to": settings.mail_to,
+        "subject": f"New message from {name}",
+        "html": body,
+    })

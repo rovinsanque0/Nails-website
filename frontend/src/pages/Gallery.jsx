@@ -3,10 +3,12 @@ import { Navbar } from "../components/Navbar"
 import { Footer } from "../components/Footer"
 import { getGallery } from "../api/gallery"
 import { PageTransition } from "../components/PageTransition"
+import { X } from "lucide-react"
 
 export function Gallery() {
     const [images, setImages] = useState([])
     const [loading, setLoading] = useState(true)
+    const [selected, setSelected] = useState(null)
 
     useEffect(() => {
         getGallery()
@@ -36,7 +38,11 @@ export function Gallery() {
                 ) : (
                     <div className="columns-2 md:columns-4 gap-3 space-y-3">
                         {images.map(img => (
-                            <div key={img.id} className="break-inside-avoid overflow-hidden rounded-xl bg-peach">
+                            <div
+                                key={img.id}
+                                className="break-inside-avoid overflow-hidden rounded-xl bg-peach will-change-transform cursor-pointer"
+                                onClick={() => setSelected(img)}
+                            >
                                 <img
                                     src={img.image_url}
                                     alt={img.caption || "Gallery image"}
@@ -52,6 +58,29 @@ export function Gallery() {
             </section>
 
             <Footer />
+
+            {selected && (
+                <div
+                    className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
+                    onClick={() => setSelected(null)}
+                >
+                    <button
+                        className="absolute top-4 right-4 text-white hover:text-cream transition"
+                        onClick={() => setSelected(null)}
+                    >
+                        <X size={28} />
+                    </button>
+                    <img
+                        src={selected.image_url}
+                        alt={selected.caption || "Gallery image"}
+                        className="max-h-[90vh] max-w-full rounded-xl object-contain"
+                        onClick={e => e.stopPropagation()}
+                    />
+                    {selected.caption && (
+                        <p className="absolute bottom-6 text-sm text-white/70">{selected.caption}</p>
+                    )}
+                </div>
+            )}
         </PageTransition>
     )
 }

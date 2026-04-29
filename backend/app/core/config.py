@@ -6,10 +6,8 @@ class Settings(BaseSettings):
     jwt_algorithm: str = "HS256"
     jwt_expire_minutes: int = 1440
 
-    mail_username: str
-    mail_password: str
-    mail_from: str
     mail_to: str
+    resend_api_key: str
 
     allowed_origins: str = "http://localhost:5173"
 
