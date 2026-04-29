@@ -18,6 +18,21 @@ async def send_appointment_email(user_email: str, service_name: str, appointment
         "html": body,
     })
 
+async def send_reset_email(email: str, reset_link: str):
+    body = f"""
+    <h3>Reset Your DBClaws Password</h3>
+    <p>Click the link below to reset your password. This link expires in 15 minutes.</p>
+    <p><a href="{reset_link}">{reset_link}</a></p>
+    <p>If you did not request this, ignore this email.</p>
+    """
+
+    resend.Emails.send({
+        "from": "DBClaws <noreply@nails.rovin.cloud>",
+        "to": email,
+        "subject": "Password Reset Request",
+        "html": body,
+    })
+
 async def send_contact_email(name: str, email: str, message: str):
     body = f"""
     <h3>New Contact Form Submission: DBClaws</h3>

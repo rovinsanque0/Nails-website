@@ -11,6 +11,8 @@ import { Gallery } from "./pages/Gallery"
 import { Contact } from "./pages/Contact"
 import { Booking } from "./pages/Booking"
 import { Login } from "./pages/Login"
+import { ForgotPassword } from "./pages/ForgotPassword"
+import { ResetPassword } from "./pages/ResetPassword"
 import { ProtectedRoute } from "./components/ProtectedRoute"
 
 function AppRoutes() {
@@ -24,6 +26,8 @@ function AppRoutes() {
                 <Route path="/contact" element={<ProtectedRoute><Contact /></ProtectedRoute>} />
                 <Route path="/booking" element={<ProtectedRoute><Booking /></ProtectedRoute>} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/reset-password" element={<ResetPassword />} />
                 <Route path="/admin" element={<ProtectedRoute adminOnly><AdminDashboard /></ProtectedRoute>}>
                     <Route path="appointments" element={<ManageAppointments />} />
                     <Route path="gallery" element={<ManageGallery />} />

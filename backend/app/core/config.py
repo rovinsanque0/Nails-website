@@ -10,6 +10,7 @@ class Settings(BaseSettings):
     resend_api_key: str
 
     allowed_origins: str = "http://localhost:5173"
+    frontend_url: str = "http://localhost:5174"
 
     cloudinary_cloud_name: str
     cloudinary_api_key: str

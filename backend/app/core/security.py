@@ -18,6 +18,19 @@ def create_access_token(data: dict):
     encode_data = jwt.encode(copy_data, settings.jwt_secret, algorithm=settings.jwt_algorithm)
     return encode_data
 
+def create_reset_token(email: str) -> str:
+    expire = datetime.utcnow() + timedelta(minutes=15)
+    return jwt.encode({"sub": email, "type": "reset", "exp": expire}, settings.jwt_secret, algorithm=settings.jwt_algorithm)
+
+def decode_reset_token(token: str):
+    try:
+        data = jwt.decode(token, settings.jwt_secret, algorithms=[settings.jwt_algorithm])
+        if data.get("type") != "reset":
+            return None
+        return data.get("sub")
+    except JWTError:
+        return None
+
 def decode_access_token(token: str):
     try:
         decode = jwt.decode(token, settings.jwt_secret, algorithms=[settings.jwt_algorithm])
