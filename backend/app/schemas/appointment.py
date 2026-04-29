@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from typing import Optional
 from datetime import datetime
 from app.models.appointment import Status
@@ -13,9 +13,11 @@ class AppointmentStatusUpdate(BaseModel):
     status: Status
 
 class AppointmentResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     id: int
     user_id: int
     service_id: int
-    appointment_date: datetime
+    date: datetime
     status: Status
     notes: Optional[str]
