@@ -4,8 +4,10 @@ from app.database.database import get_db
 from app.schemas.appointment import AppointmentCreate, AppointmentStatusUpdate, AppointmentResponse
 from app.crud.appointments import create_appointment as crud_create_appointment, update_appointment as crud_update_appointment, get_appointments as crud_get_appointment, get_user_appointments as crud_get_user_appointments
 from app.core.dependencies import get_current_admin, get_current_user
-from app.core.email import send_appointment_email
+from app.core.email import send_appointment_email, send_status_email
 from app.crud.services import get_service as crud_get_service
+from app.crud.users import get_user_by_email
+from app.models.user import User
 
 router = APIRouter()
 
@@ -19,8 +21,14 @@ def create_appointment(appointment: AppointmentCreate, background_tasks: Backgro
 
 
 @router.patch("/appointment/{appointment_id}", response_model=AppointmentResponse)
-def update_appointment(appointment_id: int, status: AppointmentStatusUpdate, db: Session = Depends(get_db), current_user = Depends(get_current_admin)):
-    return crud_update_appointment(db, appointment_id, status)
+def update_appointment(appointment_id: int, status: AppointmentStatusUpdate, background_tasks: BackgroundTasks, db: Session = Depends(get_db), current_user = Depends(get_current_admin)):
+    updated = crud_update_appointment(db, appointment_id, status)
+    if status.status in ("confirmed", "cancelled"):
+        user = db.query(User).filter(User.id == updated.user_id).first()
+        service = crud_get_service(db, updated.service_id)
+        if user and service:
+            background_tasks.add_task(send_status_email, user.email, service.name, status.status)
+    return updated
 
 @router.get("/appointment", response_model = list[AppointmentResponse])
 def get_appointment(db: Session= Depends(get_db), current_user = Depends(get_current_user)):

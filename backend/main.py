@@ -5,10 +5,10 @@ from app.database.database import engine
 from app.core.config import settings
 
 # Importing models
-from app.models import service, gallery, user, contact, appointment
+from app.models import service, gallery, user, contact, appointment, settings
 
 # Importing routers
-from app.routers import services, appointments, contact, gallery, users
+from app.routers import services, appointments, contact, gallery, users, settings
 
 app = FastAPI()
 
@@ -25,6 +25,7 @@ app.include_router(appointments.router)
 app.include_router(contact.router)
 app.include_router(gallery.router)
 app.include_router(users.router)
+app.include_router(settings.router)
 
 @app.get("/")
 def root():

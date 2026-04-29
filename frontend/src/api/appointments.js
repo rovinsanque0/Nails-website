@@ -15,3 +15,11 @@ export function createAppointment(data) {
 export function updateAppointment(id, data) {
     return apiFetch(`/appointment/${id}`, { method: "PATCH", body: JSON.stringify(data) })
 }
+
+export function getBookingStatus() {
+    return apiFetch("/settings/booking")
+}
+
+export function toggleBooking() {
+    return apiFetch("/settings/booking", { method: "PATCH" })
+}

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
-import { getAppointments, updateAppointment } from "../../api/appointments"
+import { getAppointments, updateAppointment, getBookingStatus, toggleBooking } from "../../api/appointments"
 
 const STATUS_COLORS = {
     pending: "bg-yellow-100 text-yellow-700",
@@ -11,13 +11,27 @@ const STATUS_COLORS = {
 export function ManageAppointments() {
     const [appointments, setAppointments] = useState([])
     const [loading, setLoading] = useState(true)
+    const [bookingEnabled, setBookingEnabled] = useState(true)
 
     useEffect(() => {
         getAppointments()
             .then(setAppointments)
             .catch(() => toast.error("Failed to load appointments."))
             .finally(() => setLoading(false))
+        getBookingStatus()
+            .then(data => setBookingEnabled(data.booking_enabled))
+            .catch(() => {})
     }, [])
+
+    async function handleToggleBooking() {
+        try {
+            const res = await toggleBooking()
+            setBookingEnabled(res.booking_enabled)
+            toast.success(res.booking_enabled ? "Booking is now open." : "Booking is now closed.")
+        } catch {
+            toast.error("Failed to update booking status.")
+        }
+    }
 
     async function changeStatus(id, status) {
         try {
@@ -31,7 +45,15 @@ export function ManageAppointments() {
 
     return (
         <div>
-            <h1 className="text-2xl font-bold text-cocoa mb-6">Appointments</h1>
+            <div className="flex items-center justify-between mb-6">
+                <h1 className="text-2xl font-bold text-cocoa">Appointments</h1>
+                <button
+                    onClick={handleToggleBooking}
+                    className={`text-sm font-medium px-4 py-2 rounded-full transition ${bookingEnabled ? "bg-red-100 text-red-600 hover:bg-red-200" : "bg-green-100 text-green-600 hover:bg-green-200"}`}
+                >
+                    {bookingEnabled ? "Close Booking" : "Open Booking"}
+                </button>
+            </div>
 
             {loading ? (
                 <div className="space-y-3">

@@ -3,6 +3,27 @@ from app.core.config import settings
 
 resend.api_key = settings.resend_api_key
 
+async def send_status_email(user_email: str, service_name: str, status: str):
+    if status == "confirmed":
+        message = "Your appointment has been confirmed. We look forward to seeing you!"
+        subject = "Appointment Confirmed — DBClaws"
+    else:
+        message = "Your appointment has been cancelled. Please contact us if you have any questions."
+        subject = "Appointment Cancelled — DBClaws"
+
+    body = f"""
+    <h3>{subject}</h3>
+    <p><strong>Service:</strong> {service_name}</p>
+    <p>{message}</p>
+    """
+
+    resend.Emails.send({
+        "from": "DBClaws <noreply@nails.rovin.cloud>",
+        "to": user_email,
+        "subject": subject,
+        "html": body,
+    })
+
 async def send_appointment_email(user_email: str, service_name: str, appointment_date: str):
     body = f"""
     <h3>New Appointment Booked — DBClaws</h3>
