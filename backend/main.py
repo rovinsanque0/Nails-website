@@ -5,7 +5,8 @@ from app.database.database import engine
 from app.core.config import settings
 
 # Importing models
-from app.models import service, gallery, user, contact, appointment, settings
+from app.models import service, gallery, user, contact, appointment
+from app.models import settings as settings_model
 
 # Importing routers
 from app.routers import services, appointments, contact, gallery, users
