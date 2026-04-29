@@ -13,6 +13,10 @@ class Settings(BaseSettings):
 
     allowed_origins: str = "http://localhost:5173"
 
+    cloudinary_cloud_name: str
+    cloudinary_api_key: str
+    cloudinary_api_secret: str
+
     model_config = {"env_file": ".env"}
 
 settings = Settings()

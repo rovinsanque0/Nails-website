@@ -1,14 +1,17 @@
-import { useEffect, useState } from "react"
-import { useForm } from "react-hook-form"
+import { useEffect, useState, useRef } from "react"
 import toast from "react-hot-toast"
-import { getGallery, createGallery, deleteGallery } from "../../api/gallery"
-import { Trash2 } from "lucide-react"
+import { getGallery, createGallery, deleteGallery, uploadGalleryImage } from "../../api/gallery"
+import { Trash2, Upload } from "lucide-react"
 
 export function ManageGallery() {
     const [images, setImages] = useState([])
     const [loading, setLoading] = useState(true)
     const [showForm, setShowForm] = useState(false)
-    const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm()
+    const [caption, setCaption] = useState("")
+    const [file, setFile] = useState(null)
+    const [preview, setPreview] = useState(null)
+    const [uploading, setUploading] = useState(false)
+    const fileRef = useRef()
 
     useEffect(() => {
         getGallery()
@@ -17,15 +20,30 @@ export function ManageGallery() {
             .finally(() => setLoading(false))
     }, [])
 
-    async function onSubmit(data) {
+    function handleFileChange(e) {
+        const f = e.target.files[0]
+        if (!f) return
+        setFile(f)
+        setPreview(URL.createObjectURL(f))
+    }
+
+    async function onSubmit(e) {
+        e.preventDefault()
+        if (!file) return toast.error("Please select an image.")
+        setUploading(true)
         try {
-            const newImage = await createGallery({ image_url: data.image_url, caption: data.caption })
+            const { image_url } = await uploadGalleryImage(file)
+            const newImage = await createGallery({ image_url, caption })
             setImages(prev => [...prev, newImage])
             toast.success("Image added.")
-            reset()
+            setFile(null)
+            setPreview(null)
+            setCaption("")
             setShowForm(false)
         } catch {
             toast.error("Failed to add image.")
+        } finally {
+            setUploading(false)
         }
     }
 
@@ -52,20 +70,26 @@ export function ManageGallery() {
             </div>
 
             {showForm && (
-                <form onSubmit={handleSubmit(onSubmit)} className="bg-white rounded-2xl border border-peach p-5 mb-6 shadow-sm flex flex-col gap-4">
-                    <div>
-                        <label className="block text-sm font-medium text-cocoa mb-1">Image URL</label>
-                        <input
-                            {...register("image_url", { required: "Image URL is required" })}
-                            className="w-full border border-peach rounded-lg px-3 py-2 text-sm bg-cream focus:outline-none focus:ring-2 focus:ring-dusty/30"
-                            placeholder="https://example.com/image.jpg"
-                        />
-                        {errors.image_url && <p className="text-dusty text-xs mt-1">{errors.image_url.message}</p>}
+                <form onSubmit={onSubmit} className="bg-white rounded-2xl border border-peach p-5 mb-6 shadow-sm flex flex-col gap-4">
+                    <div
+                        onClick={() => fileRef.current.click()}
+                        className="border-2 border-dashed border-peach rounded-xl p-6 flex flex-col items-center justify-center cursor-pointer hover:border-dusty transition"
+                    >
+                        {preview ? (
+                            <img src={preview} alt="preview" className="h-40 object-cover rounded-lg" />
+                        ) : (
+                            <>
+                                <Upload size={28} className="text-dusty mb-2" />
+                                <p className="text-sm text-sage">Click to select an image</p>
+                            </>
+                        )}
+                        <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleFileChange} />
                     </div>
                     <div>
                         <label className="block text-sm font-medium text-cocoa mb-1">Caption (optional)</label>
                         <input
-                            {...register("caption")}
+                            value={caption}
+                            onChange={e => setCaption(e.target.value)}
                             className="w-full border border-peach rounded-lg px-3 py-2 text-sm bg-cream focus:outline-none focus:ring-2 focus:ring-dusty/30"
                             placeholder="French tips with gold foil"
                         />
@@ -73,10 +97,10 @@ export function ManageGallery() {
                     <div className="flex justify-end">
                         <button
                             type="submit"
-                            disabled={isSubmitting}
+                            disabled={uploading}
                             className="bg-dusty text-cream text-sm font-medium px-5 py-2 rounded-full hover:bg-cocoa transition disabled:opacity-60"
                         >
-                            {isSubmitting ? "Saving..." : "Add Image"}
+                            {uploading ? "Uploading..." : "Add Image"}
                         </button>
                     </div>
                 </form>
