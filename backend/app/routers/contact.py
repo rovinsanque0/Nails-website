@@ -16,7 +16,7 @@ def get_contacts(db: Session = Depends(get_db), current_user=Depends(get_current
 def get_contact(contact_id: int, db: Session = Depends(get_db), current_user=Depends(get_current_admin)):
     return crud_get_contact(db, contact_id)
 
-@router.post("/contact/", response_model=ContactResponse)
+@router.post("/contact", response_model=ContactResponse)
 async def create_contact(contact: ContactCreate, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
     db_contact = crud_create_contact(db, contact)
     background_tasks.add_task(send_contact_email, contact.name, contact.email, contact.message)
