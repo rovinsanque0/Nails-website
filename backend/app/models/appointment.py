@@ -14,6 +14,6 @@ class Appointments(Base):
     id = Column(Integer, primary_key= True, index= True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable= False)
     service_id = Column(Integer, ForeignKey("services.id"), nullable= False)
-    status = Column(Enum(Status), nullable= False)
+    status = Column(Enum(Status), nullable=False, default=Status.pending)
     date = Column(DateTime, nullable= False)
     notes = Column(String)
