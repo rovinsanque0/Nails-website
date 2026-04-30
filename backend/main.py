@@ -37,8 +37,4 @@ def root():
 def health():
     return {"status": "ok"}
 
-@app.get("/debug/frontend-url")
-def debug_frontend_url():
-    return {"frontend_url": settings.frontend_url}
-
 Base.metadata.create_all(bind=engine)
