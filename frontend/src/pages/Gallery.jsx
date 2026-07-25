@@ -36,17 +36,17 @@ export function Gallery() {
                 ) : images.length === 0 ? (
                     <p className="text-center text-sage py-20">No gallery images yet.</p>
                 ) : (
-                    <div className="columns-2 md:columns-4 gap-3 space-y-3">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                         {images.map(img => (
                             <div
                                 key={img.id}
-                                className="break-inside-avoid overflow-hidden rounded-xl bg-peach will-change-transform cursor-pointer"
+                                className="overflow-hidden rounded-xl bg-peach will-change-transform cursor-pointer"
                                 onClick={() => setSelected(img)}
                             >
                                 <img
                                     src={img.image_url}
                                     alt={img.caption || "Gallery image"}
-                                    className="w-full object-cover hover:scale-105 transition duration-300"
+                                    className="w-full h-full object-cover aspect-square hover:scale-105 transition duration-300"
                                 />
                                 {img.caption && (
                                     <p className="text-xs text-sage px-2 py-1">{img.caption}</p>
