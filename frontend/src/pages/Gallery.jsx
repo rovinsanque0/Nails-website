@@ -1,14 +1,15 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 import { Navbar } from "../components/Navbar"
 import { Footer } from "../components/Footer"
 import { getGallery } from "../api/gallery"
 import { PageTransition } from "../components/PageTransition"
-import { X } from "lucide-react"
+import { X, ChevronLeft, ChevronRight } from "lucide-react"
 
 export function Gallery() {
     const [images, setImages] = useState([])
     const [loading, setLoading] = useState(true)
-    const [selected, setSelected] = useState(null)
+    const [selectedIndex, setSelectedIndex] = useState(null)
+    const [visible, setVisible] = useState(false)
 
     useEffect(() => {
         getGallery()
@@ -16,6 +17,47 @@ export function Gallery() {
             .catch(() => {})
             .finally(() => setLoading(false))
     }, [])
+
+    const openImage = (index) => {
+        setSelectedIndex(index)
+        setTimeout(() => setVisible(true), 10)
+    }
+
+    const closeImage = () => {
+        setVisible(false)
+        setTimeout(() => setSelectedIndex(null), 200)
+    }
+
+    const goNext = useCallback((e) => {
+        e?.stopPropagation()
+        setVisible(false)
+        setTimeout(() => {
+            setSelectedIndex(i => (i + 1) % images.length)
+            setVisible(true)
+        }, 150)
+    }, [images.length])
+
+    const goPrev = useCallback((e) => {
+        e?.stopPropagation()
+        setVisible(false)
+        setTimeout(() => {
+            setSelectedIndex(i => (i - 1 + images.length) % images.length)
+            setVisible(true)
+        }, 150)
+    }, [images.length])
+
+    useEffect(() => {
+        if (selectedIndex === null) return
+        const handleKey = (e) => {
+            if (e.key === "ArrowRight") goNext()
+            if (e.key === "ArrowLeft") goPrev()
+            if (e.key === "Escape") closeImage()
+        }
+        window.addEventListener("keydown", handleKey)
+        return () => window.removeEventListener("keydown", handleKey)
+    }, [selectedIndex, goNext, goPrev])
+
+    const selected = selectedIndex !== null ? images[selectedIndex] : null
 
     return (
         <PageTransition className="min-h-screen flex flex-col">
@@ -37,11 +79,11 @@ export function Gallery() {
                     <p className="text-center text-sage py-20">No gallery images yet.</p>
                 ) : (
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                        {images.map(img => (
+                        {images.map((img, index) => (
                             <div
                                 key={img.id}
                                 className="overflow-hidden rounded-xl bg-peach will-change-transform cursor-pointer"
-                                onClick={() => setSelected(img)}
+                                onClick={() => openImage(index)}
                             >
                                 <img
                                     src={img.image_url}
@@ -61,24 +103,44 @@ export function Gallery() {
 
             {selected && (
                 <div
-                    className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
-                    onClick={() => setSelected(null)}
+                    className={`fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 transition-opacity duration-200 ${visible ? "opacity-100" : "opacity-0"}`}
+                    onClick={closeImage}
                 >
                     <button
                         className="absolute top-4 right-4 text-white hover:text-cream transition"
-                        onClick={() => setSelected(null)}
+                        onClick={closeImage}
                     >
                         <X size={28} />
                     </button>
-                    <img
-                        src={selected.image_url}
-                        alt={selected.caption || "Gallery image"}
-                        className="max-h-[90vh] max-w-full rounded-xl object-contain"
+
+                    <button
+                        className="absolute left-4 text-white hover:text-cream transition p-2"
+                        onClick={goPrev}
+                    >
+                        <ChevronLeft size={36} />
+                    </button>
+
+                    <div
+                        className={`flex flex-col items-center transition-all duration-200 ${visible ? "scale-100 opacity-100" : "scale-95 opacity-0"}`}
                         onClick={e => e.stopPropagation()}
-                    />
-                    {selected.caption && (
-                        <p className="absolute bottom-6 text-sm text-white/70">{selected.caption}</p>
-                    )}
+                    >
+                        <img
+                            src={selected.image_url}
+                            alt={selected.caption || "Gallery image"}
+                            className="max-h-[85vh] max-w-full rounded-xl object-contain"
+                        />
+                        {selected.caption && (
+                            <p className="mt-3 text-sm text-white/70">{selected.caption}</p>
+                        )}
+                        <p className="mt-1 text-xs text-white/40">{selectedIndex + 1} / {images.length}</p>
+                    </div>
+
+                    <button
+                        className="absolute right-4 text-white hover:text-cream transition p-2"
+                        onClick={goNext}
+                    >
+                        <ChevronRight size={36} />
+                    </button>
                 </div>
             )}
         </PageTransition>
