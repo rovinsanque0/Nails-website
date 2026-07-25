@@ -21,12 +21,14 @@ export function Gallery() {
     const openImage = (index) => {
         setSelectedIndex(index)
         document.body.style.overflow = "hidden"
+        document.documentElement.style.overflow = "hidden"
         setTimeout(() => setVisible(true), 10)
     }
 
     const closeImage = () => {
         setVisible(false)
         document.body.style.overflow = ""
+        document.documentElement.style.overflow = ""
         setTimeout(() => setSelectedIndex(null), 200)
     }
 
