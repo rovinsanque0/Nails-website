@@ -11,4 +11,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Ping Render backend
-        run: curl -sf --max-time 30 "${{ secrets.RENDER_BACKEND_URL }}" -o /dev/null
+        run: curl -sf --max-time 90 "${{ secrets.RENDER_BACKEND_URL }}" -o /dev/null
